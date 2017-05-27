@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'WKBridge_Example' do
+  pod 'WKBridge', :path => '../'
+
+  target 'WKBridge_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
