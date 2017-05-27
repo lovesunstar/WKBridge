@@ -1,0 +1,6 @@
+framework module Pods_BasePods_WKBridge_Example {
+  umbrella header "Pods-BasePods-WKBridge_Example-umbrella.h"
+
+  export *
+  module * { export * }
+}

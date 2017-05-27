@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'WKBridge'
   s.version          = '0.1.0'
-  s.summary          = 'A short description of WKBridge.'
+  s.summary          = '在 WKWebView 中 提供 JS 和 Native 交互的方法'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+WKWebView 通过使用 WKScriptMessageHandler 极大简化了 JS 和 Native 通信的方法。WKScript 对 WKScriptMessageHandler 进行了封装，并且提供 JS 调用 Native 的方法，让 JS 和 Native 的交互更完美。
                        DESC
 
   s.homepage         = 'https://github.com/lovesunstar@sina.com/WKBridge'
@@ -26,17 +26,15 @@ TODO: Add long description of the pod here.
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'lovesunstar@sina.com' => 'sunjiangting@imusics.net' }
   s.source           = { :git => 'https://github.com/lovesunstar@sina.com/WKBridge.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+  # s.social_media_url = 'https://twitter.com/_lovesunstar'
 
   s.ios.deployment_target = '8.0'
 
   s.source_files = 'WKBridge/Classes/**/*'
   
-  # s.resource_bundles = {
-  #   'WKBridge' => ['WKBridge/Assets/*.png']
-  # }
+  s.resource_bundles = {
+    'WKBridge' => ['WKBridge/Assets/*.js']
+  }
 
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.frameworks = 'UIKit', 'WebKit'
 end

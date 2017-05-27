@@ -1,0 +1,16 @@
+PODS:
+  - WKBridge (0.1.0)
+
+DEPENDENCIES:
+  - WKBridge (from `../`)
+
+EXTERNAL SOURCES:
+  WKBridge:
+    :path: ../
+
+SPEC CHECKSUMS:
+  WKBridge: 4414f22f1d9b0fbebd5284c9217402aca20b151c
+
+PODFILE CHECKSUM: cb31850da9a8f81618635069a11db6c7af8ac7b9
+
+COCOAPODS: 1.2.0.beta.1

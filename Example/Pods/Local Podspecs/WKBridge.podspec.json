@@ -1,0 +1,31 @@
+{
+  "name": "WKBridge",
+  "version": "0.1.0",
+  "summary": "A short description of WKBridge.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/lovesunstar@sina.com/WKBridge",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "lovesunstar@sina.com": "sunjiangting@imusics.net"
+  },
+  "source": {
+    "git": "https://github.com/lovesunstar@sina.com/WKBridge.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "WKBridge/Classes/**/*",
+  "resource_bundles": {
+    "WKBridge": [
+      "WKBridge/Assets/*.js"
+    ]
+  },
+  "frameworks": [
+    "UIKit",
+    "WebKit"
+  ]
+}

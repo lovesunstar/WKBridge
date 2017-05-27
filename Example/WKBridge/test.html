@@ -1,0 +1,51 @@
+
+<html xmlns:og='http://ogp.me/ns#'>
+<head>
+    <title>Test JSBridge</title>
+    <meta charset="UTF-8" />    
+    <script type="text/javascript">
+        (function(){if(window.isIOS){return}window.isIOS=function(){return true;if(!navigator){return false}if(!navigator.userAgent){return false}return/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)}}());
+        (function(){if(window.bridge){return}var scheme="local";var _bridgeURL=function(action,parameters,id){if(!action){return}var link=scheme+"://"+action;if(parameters){var kvs=[];for(key in parameters){try{var encodedkey=encodeURIComponent(key);var value=parameters[key];var encodedValue;if(typeof(value)=="object"){encodedValue=encodeURIComponent(JSON.stringify(value))}else{encodedValue=encodeURIComponent(value)}kvs.push(encodedkey+"="+encodeURIComponent(encodedValue))}catch(e){}}link+=("?"+kvs.join("&"));if(id){link+=("&callback="+id)}}else{if(id){link+=("?callback="+id)}}return link};window.bridge=function(){var callbacks=[],callbackID=0;document.addEventListener("PacificDidReceiveLocalCallback",function(e){if(e.detail){var detail=e.detail;var id=isNaN(parseInt(detail.id))?-1:parseInt(detail.id);if(id!=-1){callbacks[id]&&callbacks[id](detail.parameters,detail.error);delete callbacks[id]}}},false);return{"post":function(action,parameters,callback,print){var id=callbackID++;callbacks[id]=callback;if(window.webkit&&window.webkit.messageHandlers&&window.webkit.messageHandlers.pacific){window.webkit.messageHandlers.pacific.postMessage({"action":action,"parameters":parameters,"callback":id,"print":print})}else{var src=_bridgeURL(action,parameters,id);if(src){var bridge=document.createElement("iframe");bridge.setAttribute("style","display:none");bridge.setAttribute("height","0px");bridge.setAttribute("width","0px");bridge.setAttribute("frameloader","0");bridge.src=src;document.body.appendChild(bridge);document.body.removeChild(bridge)}}}}}()}());
+    </script>
+
+    <script type="text/javascript">
+
+        function debugPrint(args) {
+            window.bridge.post('print', {message: args})
+        }
+
+        function alertUsingBridge(title) {
+            window.bridge.post('alert', {'title': title})
+        }
+
+        function testAlert() {
+            window.bridge.post('alert', {'title': 'This is alert title', 'message': 'This is alert message'})
+        }
+
+        function testReceiveError() {
+            window.bridge.post('test_error', {'key1': 'value1', 'key2': {'subkey1': 'subvalue2'}}, (results, error) => { alertUsingBridge(JSON.stringify(error)) })
+        }
+
+        function testReceiveSuccess() {
+            window.bridge.post('test_success', {'key1': 'value1', 'key2': {'subkey1': 'subvalue2'}}, (results, error) => { alertUsingBridge(JSON.stringify(results)) })
+        }
+
+    </script>
+
+    <style type="text/css">
+        ul li {
+            padding-top: 10px;
+        }
+    </style>
+
+
+</head>
+<body>
+<ul>
+    <li><a href="javascript:testAlert()">Alert</a></li>
+    <li><a href="javascript:testReceiveError()">Test Receive Error</a></li>
+    <li><a href="javascript:testReceiveSuccess()">Test Receive Success</a></li>
+</ul>
+</body>
+</html>
+

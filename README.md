@@ -5,11 +5,45 @@
 [![License](https://img.shields.io/cocoapods/l/WKBridge.svg?style=flat)](http://cocoapods.org/pods/WKBridge)
 [![Platform](https://img.shields.io/cocoapods/p/WKBridge.svg?style=flat)](http://cocoapods.org/pods/WKBridge)
 
+## Usage
+#### Native Handle Event
+
+```swift
+webView.bridge.register({ (parameters, completion) in
+print("print - ", parameters?["message"] ?? "")
+}, for: "print")
+
+webView.bridge.register({ (parameters, completion) in
+print("print - ", parameters?["message"] ?? "")
+completion(.success(["key": "value"]))
+}, for: "some_event_need_callback")
+
+```
+
+#### Native Call JS
+```swift
+webView.evaluateJavaScript("some_method();", completionHandler: { (results, error) in
+print(results ?? "")
+})
+```
+
+#### JS Send Event
+```javascript
+window.bridge.post('print', {message: 'Hello, world'})
+// Post Event With Callback
+window.bridge.post('print', {message: 'Hello, world'}, (parameters, error) => { <# Handler Parameters Or Error #>})
+```
+You can include `wk.bridge.min.js` to your own html, or you can inject it to your html using `WKUserScript`.
+
+You can [Download](https://gist.github.com/lovesunstar/efec08f8d2655ad432ab9dcb7d172536) full source-code of `wk.bridge.min.js` 
+
 ## Example
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
 ## Requirements
+
+iOS 8.0 +
 
 ## Installation
 
@@ -22,7 +56,7 @@ pod "WKBridge"
 
 ## Author
 
-lovesunstar@sina.com, sunjiangting@imusics.net
+lovesunstar@sina.com
 
 ## License
 
