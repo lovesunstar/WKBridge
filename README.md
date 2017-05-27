@@ -10,12 +10,12 @@
 
 ```swift
 webView.bridge.register({ (parameters, completion) in
-print("print - ", parameters?["message"] ?? "")
+    print("print - ", parameters?["message"] ?? "")
 }, for: "print")
 
 webView.bridge.register({ (parameters, completion) in
-print("print - ", parameters?["message"] ?? "")
-completion(.success(["key": "value"]))
+    print("print - ", parameters?["message"] ?? "")
+    completion(.success(["key": "value"]))
 }, for: "some_event_need_callback")
 
 ```
@@ -23,7 +23,7 @@ completion(.success(["key": "value"]))
 #### Native Call JS
 ```swift
 webView.evaluateJavaScript("some_method();", completionHandler: { (results, error) in
-print(results ?? "")
+    print(results ?? "")
 })
 ```
 
@@ -44,6 +44,7 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 ## Requirements
 
 iOS 8.0 +
+Swift 3.0 +
 
 ## Installation
 
