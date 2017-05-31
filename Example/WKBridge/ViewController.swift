@@ -21,6 +21,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Login", style: .done, target: self, action: #selector(handle(login:)))
         webView.frame = self.view.bounds
         webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.view.addSubview(webView)
@@ -53,6 +54,9 @@ class ViewController: UIViewController {
         alertController.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
         present(alertController, animated: true, completion: nil)
     }
-
+    
+    @objc private func handle(login: UIButton) {
+        webView.bridge.post(action: "login", parameters: nil)
+    }
 }
 

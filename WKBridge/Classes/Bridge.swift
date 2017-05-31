@@ -14,6 +14,9 @@ open class Bridge: NSObject {
     
     static let name: String = "pacific"
     
+    fileprivate static let callbackEventName = "PacificDidReceiveNativeCallback"
+    fileprivate static let postEventName = "PacificDidReceiveNativeBroadcast"
+    
     fileprivate enum MessageKey {
         static let action = "action"
         static let parameters = "parameters"
@@ -83,6 +86,22 @@ open class Bridge: NSObject {
         handlers[action] = nil
     }
     
+    /// 发送事件到 js 的监听
+    /// - Parameter action: js 通过 `window.bridge.on(**action**, handler)` 监听的事件
+    /// - Parameter parameters: 需要传入 js 的参数
+    public func post(action: String, parameters: [String: Any]?) {
+        guard let webView = webView else { return }
+        webView.st_dispatchBridgeEvent(Bridge.postEventName, parameters: ["name": action], results: .success(parameters), completionHandler: nil)
+    }
+    
+    /// Evaluates the given JavaScript string.
+    /// - Parameter javaScriptString:  The JavaScript string to evaluate.
+    /// - Parameter completion: A block to invoke when script evaluation completes or fails.
+    public func evaluate(_ javaScriptString: String, completion: ((Any?, Error?) -> Void)? = nil) {
+        guard let webView = webView else { return }
+        webView.evaluateJavaScript(javaScriptString, completionHandler: completion)
+    }
+    
     open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if let obj = object as? WKWebViewConfiguration, let kp = keyPath, obj == configuration && kp == #keyPath(WKWebViewConfiguration.userContentController) {
             if let change = change {
@@ -99,6 +118,11 @@ open class Bridge: NSObject {
 
 extension Bridge: WKScriptMessageHandler {
     
+    /*! @abstract Invoked when a script message is received from a webpage.
+     @param userContentController The user content controller invoking the
+     delegate method.
+     @param message The script message received.
+     */
     public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         guard let body = message.body as? [String: Any], let name = body[MessageKey.action] as? String, let handler = handlers[name] else {
             return
@@ -110,27 +134,7 @@ extension Bridge: WKScriptMessageHandler {
             handler(body[MessageKey.parameters] as? [String: Any]) { (results) in
                 // Do Nothing
                 guard let webView = webView else { return }
-                var eventDetail: [String: Any] = ["id": callbackID]
-                switch results {
-                case .failure(let error):
-                    eventDetail["error"] = ["code": error.code, "description": error.description]
-                case .success(let callbackParameters):
-                    eventDetail["parameters"] = callbackParameters ?? [:]
-                }
-                let eventBody: [String: Any] = ["detail": eventDetail]
-                let jsString: String
-                if let _data = try? JSONSerialization.data(withJSONObject: eventBody, options: JSONSerialization.WritingOptions()), let eventString = String(data: _data, encoding: .utf8) {
-                    jsString = "(function() { var event = new CustomEvent('PacificDidReceiveLocalCallback', \(eventString)); document.dispatchEvent(event)}());"
-                } else {
-                    // 这块代码是为了兼容 有一部分不能被序列化的字段
-                    switch results {
-                    case .success(_):
-                        jsString = "(function() { var event = new CustomEvent('PacificDidReceiveLocalCallback', {'detail': {'parameters': {}}}); document.dispatchEvent(event)}());"
-                    case .failure(let error):
-                        jsString = "(function() { var event = new CustomEvent('PacificDidReceiveLocalCallback', {'detail': {'error': {'code': \(error.code), 'description': '\(error.description)'}}}); document.dispatchEvent(event)}());"
-                    }
-                }
-                webView.evaluateJavaScript(jsString, completionHandler: nil)
+                webView.st_dispatchBridgeEvent(Bridge.callbackEventName, parameters: ["id": callbackID], results: results, completionHandler: nil)
             }
         } else {
             handler(body[MessageKey.parameters] as? [String: Any]) { (results) in
@@ -153,5 +157,39 @@ public extension WKWebView {
         let bridge = Bridge(webView: self)
         objc_setAssociatedObject(self, &STPrivateStatic.bridgeKey, bridge, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         return bridge
+    }
+}
+
+fileprivate extension WKWebView {
+    
+    fileprivate func st_dispatchBridgeEvent(_ eventName: String,
+                                            parameters: [String: Any],
+                                            results: Bridge.Results,
+                                            completionHandler: ((Any?, Error?) -> Void)? = nil) {
+        
+        var eventDetail: [String: Any] = parameters
+        switch results {
+        case .failure(let error):
+            eventDetail["error"] = ["code": error.code, "description": error.description]
+        case .success(let callbackParameters):
+            eventDetail["parameters"] = callbackParameters ?? [:]
+        }
+        let eventBody: [String: Any] = ["detail": eventDetail]
+        let jsString: String
+        if
+            let _data = try? JSONSerialization.data(withJSONObject: eventBody, options: JSONSerialization.WritingOptions()),
+            let eventString = String(data: _data, encoding: .utf8) {
+            
+            jsString = "(function() { var event = new CustomEvent('\(eventName)', \(eventString)); document.dispatchEvent(event)}());"
+        } else {
+            // 这块代码是为了兼容 有一部分不能被序列化的字段
+            switch results {
+            case .success(_):
+                jsString = "(function() { var event = new CustomEvent('\(eventName)', {'detail': {'parameters': {}}}); document.dispatchEvent(event)}());"
+            case .failure(let error):
+                jsString = "(function() { var event = new CustomEvent('\(eventName)', {'detail': {'error': {'code': \(error.code), 'description': '\(error.description)'}}}); document.dispatchEvent(event)}());"
+            }
+        }
+        evaluateJavaScript(jsString, completionHandler: completionHandler)
     }
 }
