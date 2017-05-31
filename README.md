@@ -25,6 +25,10 @@ completion(.success(["key": "value"]))
 webView.evaluateJavaScript("some_method();", completionHandler: { (results, error) in
 print(results ?? "")
 })
+
+webView.bridge.evaluate("some_method()", completion: { (results, error) in
+print(results ?? "")
+})
 ```
 
 #### JS Send Event
