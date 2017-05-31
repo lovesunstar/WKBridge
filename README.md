@@ -10,12 +10,12 @@
 
 ```swift
 webView.bridge.register({ (parameters, completion) in
-    print("print - ", parameters?["message"] ?? "")
+print("print - ", parameters?["message"] ?? "")
 }, for: "print")
 
 webView.bridge.register({ (parameters, completion) in
-    print("print - ", parameters?["message"] ?? "")
-    completion(.success(["key": "value"]))
+print("print - ", parameters?["message"] ?? "")
+completion(.success(["key": "value"]))
 }, for: "some_event_need_callback")
 
 ```
@@ -23,7 +23,7 @@ webView.bridge.register({ (parameters, completion) in
 #### Native Call JS
 ```swift
 webView.evaluateJavaScript("some_method();", completionHandler: { (results, error) in
-    print(results ?? "")
+print(results ?? "")
 })
 ```
 
@@ -33,6 +33,18 @@ window.bridge.post('print', {message: 'Hello, world'})
 // Post Event With Callback
 window.bridge.post('print', {message: 'Hello, world'}, (parameters, error) => { <# Handler Parameters Or Error #>})
 ```
+
+#### JS Register Native Event
+```javascript
+var unregisterHandler = window.bridge.on('login', (parameters)=> {console.log('User Did Login')})
+// To Remove Listener, call `unregisterHandler()`, Or Remove All Listener window.bridge.off('login')
+```
+
+#### Native Send Event To JS
+```swift
+webView.bridge.post(action: "login", parameters: nil)
+```
+
 You can include `wk.bridge.min.js` to your own html, or you can inject it to your html using `WKUserScript`.
 
 You can [Download](https://gist.github.com/lovesunstar/efec08f8d2655ad432ab9dcb7d172536) full source-code of `wk.bridge.min.js` 
@@ -44,7 +56,6 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 ## Requirements
 
 iOS 8.0 +
-Swift 3.0 +
 
 ## Installation
 
