@@ -5,17 +5,26 @@
 [![License](https://img.shields.io/cocoapods/l/WKBridge.svg?style=flat)](http://cocoapods.org/pods/WKBridge)
 [![Platform](https://img.shields.io/cocoapods/p/WKBridge.svg?style=flat)](http://cocoapods.org/pods/WKBridge)
 
+`WKScriptMessageHandler` greatly simplifies the message handler from javascript running in a webpage. WKScript provides a more efficiently way for both sending and receiving messages through `WKScriptMessageHandler`.
+
+## Features
+
+- [x] Send / Receive Messages
+- [x] Bind Events In JavaScript
+- [x] Callback Event
+
 ## Usage
+
 #### Native Handle Event
 
 ```swift
 webView.bridge.register({ (parameters, completion) in
-print("print - ", parameters?["message"] ?? "")
+    print("print - ", parameters?["message"] ?? "")
 }, for: "print")
 
 webView.bridge.register({ (parameters, completion) in
-print("print - ", parameters?["message"] ?? "")
-completion(.success(["key": "value"]))
+    print("print - ", parameters?["message"] ?? "")
+    completion(.success(["key": "value"]))
 }, for: "some_event_need_callback")
 
 ```
@@ -23,11 +32,11 @@ completion(.success(["key": "value"]))
 #### Native Call JS
 ```swift
 webView.evaluateJavaScript("some_method();", completionHandler: { (results, error) in
-print(results ?? "")
+    print(results ?? "")
 })
 
 webView.bridge.evaluate("some_method()", completion: { (results, error) in
-print(results ?? "")
+    print(results ?? "")
 })
 ```
 

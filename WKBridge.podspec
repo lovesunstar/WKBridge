@@ -8,8 +8,8 @@
 
 Pod::Spec.new do |s|
   s.name             = 'WKBridge'
-  s.version          = '0.2.1'
-  s.summary          = '在 WKWebView 中 提供 JS 和 Native 交互的方法'
+  s.version          = '0.2.2'
+  s.summary          = 'Bridge for WKWebView and JavaScript'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-WKWebView 通过使用 WKScriptMessageHandler 极大简化了 JS 和 Native 通信的方法。WKScript 对 WKScriptMessageHandler 进行了封装，并且提供 JS 调用 Native 的方法，让 JS 和 Native 的交互更完美。
+`WKScriptMessageHandler` greatly simplifies the message handler from javascript running in a webpage. WKScript provides a more efficiently way for both sending and receiving messages through `WKScriptMessageHandler`.
                        DESC
 
   s.homepage         = 'https://github.com/lovesunstar/WKBridge'
