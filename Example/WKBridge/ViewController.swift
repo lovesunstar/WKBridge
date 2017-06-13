@@ -12,6 +12,8 @@ import WKBridge
 
 class ViewController: UIViewController {
     
+    var isLogin = false
+    
     private lazy var webView: WKWebView = {
         let webView = WKWebView(frame: .zero, configuration: WKWebViewConfiguration())
         
@@ -21,7 +23,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Login", style: .done, target: self, action: #selector(handle(login:)))
+        
         webView.frame = self.view.bounds
         webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.view.addSubview(webView)
@@ -47,6 +49,17 @@ class ViewController: UIViewController {
             guard let strongSelf = self, let parameters = parameters else { return }
             strongSelf.alert(with: parameters["title"] as? String, message: parameters["message"] as? String)
         }, for: "alert")
+        
+        updateLoginStatus()
+    }
+    
+    private func updateLoginStatus() {
+        if isLogin {
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Logout", style: .done, target: self, action: #selector(handleLogout(_:)))
+        } else {
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Login", style: .done, target: self, action: #selector(handleLogin(_:)))
+        }
+        isLogin = !isLogin
     }
 
     private func alert(with title: String?, message: String?) {
@@ -55,8 +68,14 @@ class ViewController: UIViewController {
         present(alertController, animated: true, completion: nil)
     }
     
-    @objc private func handle(login: UIButton) {
+    @objc private func handleLogin(_ sender: Any) {
         webView.bridge.post(action: "login", parameters: nil)
+        updateLoginStatus()
+    }
+    
+    @objc private func handleLogout(_ sender: Any) {
+        webView.bridge.post(action: "logout", parameters: nil)
+        updateLoginStatus()
     }
 }
 

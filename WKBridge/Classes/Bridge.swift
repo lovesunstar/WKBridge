@@ -3,13 +3,13 @@
 //  JSBridge
 //
 //  Created by SunJiangting on 2017/5/27.
-//  Copyright © 2017年 Samaritan. All rights reserved.
+//  Copyright © 2017 Samaritan. All rights reserved.
 //
 
 import UIKit
 import WebKit
 
-/// JS 和 Native 代码交互设计
+/// Bridge for WKWebView and JavaScript
 open class Bridge: NSObject {
     
     static let name: String = "pacific"
@@ -34,21 +34,26 @@ open class Bridge: NSObject {
         }
     }
     
-    /// 执行完某个 action 的结果
+    /// Used to callback to webpage whether a message from webpage was handled successful or encountered an error.
+    ///
+    /// - success: The result of message was successful
+    ///
+    /// - failure: Unable to handle the message, notify js with error by **Object Error** { code: Int, description: String}
+    ///
     public enum Results {
-        /// 执行成功
+        
         case success([String: Any]?)
-        /// 执行失败
+        
         case failure(JSError)
     }
     
-    /// Bridge 处理事件的回调, 处理事件之后，如果需要回调，则会通知 js
-    /// - parameter results: 需要回调给 JS 的结果。均会转成 JS Objects
+    /// Bridge Callback to webpage
+    /// - Parameter results: Value pass to webpage
     public typealias Callback = (_ results: Results) -> Void
     
-    /// 注册处理事件的回调，当满足条件时，会执行此闭包
-    /// - Parameter parameters: js 传入的参数
-    /// - Parameter callback: 执行完毕之后告诉外边执行的结果
+    /// Closure when js send message to native
+    /// - Parameter parameters: js parameters
+    /// - Parameter callback: callback func
     public typealias Handler = (_ parameters: [String: Any]?, _ callback: Callback) -> Void
     
     private(set) var handlers = [String: Handler]()
@@ -56,6 +61,7 @@ open class Bridge: NSObject {
     private let configuration: WKWebViewConfiguration
     fileprivate weak var webView: WKWebView?
     
+    /// Print message body from webpage automatically.
     public var printScriptMessageAutomatically = false
     
     deinit {
@@ -71,24 +77,36 @@ open class Bridge: NSObject {
         configuration.userContentController.add(self, name: Bridge.name)
     }
     
-    /// 注册某个事件的处理
-    /// - Parameter handler: 回调处理
-    /// - parameter action: 需要处理的事件名称
+    /// Register to handle action
+    /// - Parameter handler: closure when handle message from webpage
+    /// - parameter action: name of action
     ///
     /// - SeeAlso: `Handler`
+    ///
+    /// ```javascript
+    /// // Post Event With Action Name
+    /// window.bridge.post('print', {message: 'Hello, world'})
+    /// // Post Event With Callback
+    /// window.bridge.post('print', {message: 'Hello, world'}, (parameters, error) => { Handler Parameters Or Error})
+    /// ```
     public func register(_ handler: @escaping Handler, for action: String) {
         handlers[action] = handler
     }
     
-    /// 取消注册某个事件的处理
-    /// - Parameters action: 需要取消的事件名称
+    /// Unregister an action
+    /// - Parameters action: name of action
     public func unregister(for action: String) {
         handlers[action] = nil
     }
     
-    /// 发送事件到 js 的监听
-    /// - Parameter action: js 通过 `window.bridge.on(**action**, handler)` 监听的事件
-    /// - Parameter parameters: 需要传入 js 的参数
+    /// send action to webpage
+    /// - Parameter action: action listened by js `window.bridge.on(**action**, handler)`
+    /// - Parameter parameters: parameters pass to js
+    ///
+    /// ```javascript
+    /// // listen native login action
+    /// window.bridge.on('login', (parameters)=> {console.log('User Did Login')})
+    /// ```
     public func post(action: String, parameters: [String: Any]?) {
         guard let webView = webView else { return }
         webView.st_dispatchBridgeEvent(Bridge.postEventName, parameters: ["name": action], results: .success(parameters), completionHandler: nil)
@@ -150,6 +168,7 @@ public extension WKWebView {
         fileprivate static var bridgeKey = "STPrivateStatic.bridgeKey"
     }
     
+    /// Bridge for WKWebView and JavaScript
     public var bridge: Bridge {
         if let bridge = objc_getAssociatedObject(self, &STPrivateStatic.bridgeKey) as? Bridge {
             return bridge
