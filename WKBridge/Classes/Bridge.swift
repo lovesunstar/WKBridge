@@ -58,7 +58,7 @@ open class Bridge: NSObject {
     
     private(set) var handlers = [String: Handler]()
     
-    private let configuration: WKWebViewConfiguration
+    fileprivate let configuration: WKWebViewConfiguration
     fileprivate weak var webView: WKWebView?
     
     /// Print message body from webpage automatically.
@@ -66,7 +66,7 @@ open class Bridge: NSObject {
     
     deinit {
         configuration.removeObserver(self, forKeyPath: #keyPath(WKWebViewConfiguration.userContentController))
-        configuration.userContentController.removeObserver(self, forKeyPath: Bridge.name)
+        configuration.userContentController.removeScriptMessageHandler(forName: Bridge.name)
     }
     
     fileprivate init(webView: WKWebView) {
@@ -124,9 +124,9 @@ open class Bridge: NSObject {
         if let obj = object as? WKWebViewConfiguration, let kp = keyPath, obj == configuration && kp == #keyPath(WKWebViewConfiguration.userContentController) {
             if let change = change {
                 if let oldContentController = change[.oldKey] as? WKUserContentController {
-                    oldContentController.removeObserver(self, forKeyPath: Bridge.name)
+                    oldContentController.removeScriptMessageHandler(forName: Bridge.name)
                 }
-                if let newContentController = change[.oldKey] as? WKUserContentController {
+                if let newContentController = change[.newKey] as? WKUserContentController {
                     newContentController.add(self, name: Bridge.name)
                 }
             }
@@ -168,7 +168,7 @@ public extension WKWebView {
         fileprivate static var bridgeKey = "STPrivateStatic.bridgeKey"
     }
     
-    /// Bridge for WKWebView and JavaScript
+    /// Bridge for WKWebView and JavaScript. Initialize `lazy`
     public var bridge: Bridge {
         if let bridge = objc_getAssociatedObject(self, &STPrivateStatic.bridgeKey) as? Bridge {
             return bridge
@@ -176,6 +176,15 @@ public extension WKWebView {
         let bridge = Bridge(webView: self)
         objc_setAssociatedObject(self, &STPrivateStatic.bridgeKey, bridge, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         return bridge
+    }
+    
+    /// Remove Bridge And Reset, All the handlers will be removed
+    public func removeBridge() {
+        if let bridge = objc_getAssociatedObject(self, &STPrivateStatic.bridgeKey) as? Bridge {
+            let userContentController = bridge.configuration.userContentController
+            userContentController.removeScriptMessageHandler(forName: Bridge.name)
+        }
+        objc_setAssociatedObject(self, &STPrivateStatic.bridgeKey, nil, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     }
 }
 
