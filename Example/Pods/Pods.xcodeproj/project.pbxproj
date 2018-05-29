@@ -39,24 +39,24 @@
 
 /* Begin PBXFileReference section */
 		0B26B51720FFB3274AB8F099A62DFC72 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		12BE453A80BD507BBC3E6AF43A320D2F /* Pods_BasePods_WKBridge_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_BasePods_WKBridge_Example.framework; path = "Pods-BasePods-WKBridge_Example.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		12BE453A80BD507BBC3E6AF43A320D2F /* Pods_BasePods_WKBridge_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BasePods_WKBridge_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		16F672F67062B083A2B6F5856A304B76 /* WKBridge-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "WKBridge-dummy.m"; sourceTree = "<group>"; };
-		19A040885B15BB8CC0A8900E97F36B70 /* WKBridge.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = WKBridge.framework; path = WKBridge.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		1A1FB6C203D01439C2FEDB9D6661432D /* wk.bridge.min.js */ = {isa = PBXFileReference; includeInIndex = 1; path = wk.bridge.min.js; sourceTree = "<group>"; };
-		1EA245EA6226F217676DEC127D9D4ADE /* WKBridge.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = WKBridge.bundle; path = WKBridge.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		19A040885B15BB8CC0A8900E97F36B70 /* WKBridge.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WKBridge.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A1FB6C203D01439C2FEDB9D6661432D /* wk.bridge.min.js */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.javascript; path = wk.bridge.min.js; sourceTree = "<group>"; };
+		1EA245EA6226F217676DEC127D9D4ADE /* WKBridge.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WKBridge.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FAF4F70740F05FA34D54F1982E18E7A /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.0.sdk/System/Library/Frameworks/WebKit.framework; sourceTree = DEVELOPER_DIR; };
 		3BBD929C3784A0C05B6B752945FB5500 /* WKBridge-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "WKBridge-prefix.pch"; sourceTree = "<group>"; };
 		4BF8F21AB715C8A03731F8BC36FF7757 /* WKBridge-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "WKBridge-umbrella.h"; sourceTree = "<group>"; };
 		527DECACB4C3385B77A2F36C9F893415 /* Pods-BasePods-WKBridge_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-BasePods-WKBridge_Example-dummy.m"; sourceTree = "<group>"; };
 		5904059403D94CF1E5B713AA1A7BB301 /* Pods-BasePods-WKBridge_Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-BasePods-WKBridge_Example-resources.sh"; sourceTree = "<group>"; };
-		639F17932570D23F371C73DE98007349 /* WKBridge.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = WKBridge.modulemap; sourceTree = "<group>"; };
+		639F17932570D23F371C73DE98007349 /* WKBridge.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = WKBridge.modulemap; sourceTree = "<group>"; };
 		69DA478B02AA82DCE94F840C44313EA3 /* ResourceBundle-WKBridge-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ResourceBundle-WKBridge-Info.plist"; sourceTree = "<group>"; };
-		73B30E4064D93B28DC33ED3C46D02679 /* Pods-BasePods-WKBridge_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-BasePods-WKBridge_Example.modulemap"; sourceTree = "<group>"; };
+		73B30E4064D93B28DC33ED3C46D02679 /* Pods-BasePods-WKBridge_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-BasePods-WKBridge_Example.modulemap"; sourceTree = "<group>"; };
 		7C9685EAC07466274911D4E0F1398A30 /* Pods-BasePods-WKBridge_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-BasePods-WKBridge_Example-acknowledgements.plist"; sourceTree = "<group>"; };
 		81607F20092CACC1394D3DCB7D6993B0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		8C5E9FDC86FFB3AF1CCA03160E6CB893 /* WKBridge.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = WKBridge.xcconfig; sourceTree = "<group>"; };
 		8F3CD5E58D1429A737320E2CF2A044DC /* Pods-BasePods-WKBridge_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-BasePods-WKBridge_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		CFD96D9BBC954552D1D08231A3CB7A96 /* Pods-BasePods-WKBridge_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BasePods-WKBridge_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		D1ACABE30DE0F649AE3E64507A8B512F /* Pods-BasePods-WKBridge_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-BasePods-WKBridge_Example-frameworks.sh"; sourceTree = "<group>"; };
 		D748019DCD603D25E84C08584519BE31 /* Bridge.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Bridge.swift; sourceTree = "<group>"; };
@@ -144,7 +144,6 @@
 			children = (
 				D748019DCD603D25E84C08584519BE31 /* Bridge.swift */,
 			);
-			name = Classes;
 			path = Classes;
 			sourceTree = "<group>";
 		};
@@ -200,7 +199,6 @@
 			children = (
 				1A1FB6C203D01439C2FEDB9D6661432D /* wk.bridge.min.js */,
 			);
-			name = Assets;
 			path = Assets;
 			sourceTree = "<group>";
 		};
@@ -225,7 +223,6 @@
 			children = (
 				A55DDF5AE2FE117C73EFFAE21B556189 /* Assets */,
 			);
-			name = WKBridge;
 			path = WKBridge;
 			sourceTree = "<group>";
 		};
@@ -234,7 +231,6 @@
 			children = (
 				543408F12C60C7C59F5145FB0B12CE0A /* Classes */,
 			);
-			name = WKBridge;
 			path = WKBridge;
 			sourceTree = "<group>";
 		};
@@ -322,6 +318,11 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
 				LastUpgradeCheck = 0700;
+				TargetAttributes = {
+					8C67B9E5C6AD77A680BAF30EE20FB157 = {
+						LastSwiftMigration = 0900;
+					};
+				};
 			};
 			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -430,7 +431,8 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -462,7 +464,8 @@
 				PRODUCT_NAME = WKBridge;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";

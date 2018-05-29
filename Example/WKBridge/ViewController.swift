@@ -49,11 +49,11 @@ class ViewController: UIViewController {
             print("print - ", parameters?["message"] ?? "")
         }, for: "print")
         
-        webView.bridge.register({ [weak self] (parameters, _) in
+        webView.bridge.register({ [weak self] (parameters, completion) in
             guard let strongSelf = self, let parameters = parameters else { return }
             strongSelf.alert(with: parameters["title"] as? String, message: parameters["message"] as? String)
+            completion(.success(["button_index": 1]))
         }, for: "alert")
-        
         updateLoginStatus()
     }
     

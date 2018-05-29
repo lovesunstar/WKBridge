@@ -210,7 +210,7 @@ fileprivate extension WKWebView {
             
             jsString = "(function() { var event = new CustomEvent('\(eventName)', \(eventString)); document.dispatchEvent(event)}());"
         } else {
-            // 这块代码是为了兼容 有一部分不能被序列化的字段
+            // When JSON Not Serializable, Invoke with Default Parameters
             switch results {
             case .success(_):
                 jsString = "(function() { var event = new CustomEvent('\(eventName)', {'detail': {'parameters': {}}}); document.dispatchEvent(event)}());"
