@@ -56,7 +56,11 @@ open class Bridge: NSObject {
     /// - Parameter callback: callback func
     public typealias Handler = (_ parameters: [String: Any]?, _ callback: Callback) -> Void
     
+    public typealias DefaultHandler = (_ name: String, _ parameters: [String: Any]?, _ callback: Callback) -> Void
+    
     private(set) var handlers = [String: Handler]()
+    
+    public var defaultHandler: DefaultHandler?
     
     fileprivate let configuration: WKWebViewConfiguration
     fileprivate weak var webView: WKWebView?
@@ -142,12 +146,30 @@ extension Bridge: WKScriptMessageHandler {
      @param message The script message received.
      */
     public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        guard let body = message.body as? [String: Any], let name = body[MessageKey.action] as? String, let handler = handlers[name] else {
+        guard let body = message.body as? [String: Any], let name = body[MessageKey.action] as? String else {
             return
         }
         if (body[MessageKey.printable] as? NSNumber)?.boolValue ?? printScriptMessageAutomatically {
             print(body)
         }
+        guard let handler = handlers[name] else {
+            guard let defaultHandler = self.defaultHandler else {
+                return
+            }
+            if let callbackID = (body[MessageKey.callback] as? NSNumber) {
+                defaultHandler(name, body[MessageKey.parameters] as? [String: Any]) { (results) in
+                    // Do Nothing
+                    guard let webView = webView else { return }
+                    webView.st_dispatchBridgeEvent(Bridge.callbackEventName, parameters: ["id": callbackID], results: results, completionHandler: nil)
+                }
+            } else {
+                defaultHandler(name, body[MessageKey.parameters] as? [String: Any]) { (results) in
+                    // Do Nothing
+                }
+            }
+            return
+        }
+      
         if let callbackID = (body[MessageKey.callback] as? NSNumber) {
             handler(body[MessageKey.parameters] as? [String: Any]) { (results) in
                 // Do Nothing

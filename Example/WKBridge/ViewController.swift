@@ -49,6 +49,10 @@ class ViewController: UIViewController {
             print("print - ", parameters?["message"] ?? "")
         }, for: "print")
         
+        webView.bridge.defaultHandler = { [weak self] (action, parameters, completion) in
+            print("Fallback Action", action, parameters ?? "")
+        }
+        
         webView.bridge.register({ [weak self] (parameters, completion) in
             guard let strongSelf = self, let parameters = parameters else { return }
             strongSelf.alert(with: parameters["title"] as? String, message: parameters["message"] as? String)

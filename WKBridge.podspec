@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'WKBridge'
-  s.version          = '0.2.4'
+  s.version          = '0.2.5'
   s.summary          = 'Bridge for WKWebView and JavaScript'
 
 # This description is used to generate tags and improve search results.
