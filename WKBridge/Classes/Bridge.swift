@@ -54,9 +54,9 @@ open class Bridge: NSObject {
     /// Closure when js send message to native
     /// - Parameter parameters: js parameters
     /// - Parameter callback: callback func
-    public typealias Handler = (_ parameters: [String: Any]?, _ callback: Callback) -> Void
+    public typealias Handler = (_ parameters: [String: Any]?, _ callback: @escaping Callback) -> Void
     
-    public typealias DefaultHandler = (_ name: String, _ parameters: [String: Any]?, _ callback: Callback) -> Void
+    public typealias DefaultHandler = (_ name: String, _ parameters: [String: Any]?, _ callback: @escaping Callback) -> Void
     
     private(set) var handlers = [String: Handler]()
     
@@ -157,9 +157,12 @@ extension Bridge: WKScriptMessageHandler {
                 return
             }
             if let callbackID = (body[MessageKey.callback] as? NSNumber) {
-                defaultHandler(name, body[MessageKey.parameters] as? [String: Any]) { (results) in
+                defaultHandler(name, body[MessageKey.parameters] as? [String: Any]) { [weak self] (results) in
+                    guard let strongSelf = self else {
+                        return
+                    }
                     // Do Nothing
-                    guard let webView = webView else { return }
+                    guard let webView = strongSelf.webView else { return }
                     webView.st_dispatchBridgeEvent(Bridge.callbackEventName, parameters: ["id": callbackID], results: results, completionHandler: nil)
                 }
             } else {
@@ -171,9 +174,12 @@ extension Bridge: WKScriptMessageHandler {
         }
       
         if let callbackID = (body[MessageKey.callback] as? NSNumber) {
-            handler(body[MessageKey.parameters] as? [String: Any]) { (results) in
+            handler(body[MessageKey.parameters] as? [String: Any]) { [weak self] (results) in
+                guard let strongSelf = self else {
+                    return
+                }
                 // Do Nothing
-                guard let webView = webView else { return }
+                guard let webView = strongSelf.webView else { return }
                 webView.st_dispatchBridgeEvent(Bridge.callbackEventName, parameters: ["id": callbackID], results: results, completionHandler: nil)
             }
         } else {
